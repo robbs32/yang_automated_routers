@@ -1,0 +1,59 @@
+---
+- name: Configure devices via RESTCONF
+  hosts: routers
+  connection: local
+  tasks:
+
+  - name: Configure SNMP
+    uri:
+      url: "{{ url }}/data/native/snmp-server"
+      user:  "{{ ansible_user }}"
+      password: "{{ ansible_password }}"
+      method: PUT
+      headers:
+        Content-Type: "application/yang-data+json"
+        Accept:
+          application/yang-data+json,
+          application/yang-data.errors+json
+      body_format: json
+      body: "{{ snmp_configure }}"
+      validate_certs: false
+      status_code:
+        - 200
+        - 204  
+ 
+  - name: Configure NTP
+    uri:
+      url: "{{ url }}/data/native/ntp"
+      user:  "{{ ansible_user }}"
+      password: "{{ ansible_password }}"
+      method: PUT
+      headers:
+        Content-Type: "application/yang-data+json"
+        Accept:
+          application/yang-data+json,
+          application/yang-data.errors+json
+      body_format: json
+      body: "{{ ntp_configure }}"
+      validate_certs: false
+      status_code:
+        - 200
+        - 204
+
+  - name: Configure OSPF
+    uri:
+      url: "{{ url }}/data/native/router"
+      user:  "{{ ansible_user }}"
+      password: "{{ ansible_password }}"
+      method: PUT
+      headers:
+        Content-Type: "application/yang-data+json"
+        Accept:
+          application/yang-data+json,
+          application/yang-data.errors+json
+      body_format: json
+      body: "{{ ospf_configure }}"
+      validate_certs: false
+      status_code:
+        - 200
+        - 204

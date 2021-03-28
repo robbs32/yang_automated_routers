@@ -1,0 +1,22 @@
+---
+
+- name: Get RESTCONF information from devices
+  hosts: R1
+  connection: local
+  tasks:
+
+  - name: Get RESTCONF infomation
+    uri:
+      url: "{{ url }}/data/native/ntp"
+      user:  "{{ ansible_user }}"
+      password: "{{ ansible_password }}"
+      method: GET
+      return_content: true
+      headers:
+        accept: "application/yang-data+json"
+      validate_certs: false
+    register: getter
+
+  - name: Print out RESTCONF information
+    debug:
+      var: getter.json
